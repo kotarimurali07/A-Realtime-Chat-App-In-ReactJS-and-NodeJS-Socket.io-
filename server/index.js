@@ -14,12 +14,11 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("connnected:", socket.id);
   socket.on("send_message", (data) => {
-    console.log(data);
-    socket.to(data.roomID).emit("receive_message", data);
+    console.log(data, "================");
+    socket.to(data.room).emit("receive_message", data);
   });
   socket.on("join_room", (roomID) => {
     socket.join(roomID);
-    // console.log(roomID);
     console.log(
       `USER WITH ROOM ID: ${socket.id} IS JOINED THE ROOM: ${roomID}`
     );

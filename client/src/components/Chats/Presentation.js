@@ -3,8 +3,9 @@ import ScrollToBottom from "react-scroll-to-bottom";
 const Presentation = ({ socket, userName, roomId }) => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
-  console.log(roomId, socket, userName);
+
   const sendMessage = async () => {
+    console.log("first");
     if (currentMessage !== "") {
       const messageData = {
         room: roomId,
@@ -15,15 +16,16 @@ const Presentation = ({ socket, userName, roomId }) => {
           ":" +
           new Date(Date.now()).getMinutes(),
       };
-      // console.log(messageData);
+      console.log("send meaage entery");
       await socket.emit("send_message", messageData);
       setMessageList((list) => [...list, messageData]);
+      setCurrentMessage("");
     }
   };
   useEffect(() => {
     socket.on("receive_message", (data) => {
-      console.log(data);
       setMessageList((list) => [...list, data]);
+      console.log(data);
     });
   }, [socket]);
   return (
@@ -65,7 +67,7 @@ const Presentation = ({ socket, userName, roomId }) => {
             event.key === "Enter" && sendMessage();
           }}
         />
-        <button onClick={sendMessage}>&#9658;</button>
+        <button onClick={sendMessage}>+</button>
       </div>
     </div>
   );
